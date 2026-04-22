@@ -6,6 +6,25 @@ from .common import manager_security
 from comfy.cli_args import args
 
 
+# Register server-push feature flag so frontends (ComfyUI_frontend) can
+# detect CSRF-POST backend capability as a semantic contract (vs version
+# string parsing). See PR #2818 for context; cmfront uses this flag to
+# decide whether to invoke POST state-mutation endpoints. Pre-4.2.1 Manager
+# does not set this flag — cmfront treats its absence as 'incompatible'.
+try:
+    from comfy_api import feature_flags as _core_feature_flags
+    _mgr_flags = (
+        _core_feature_flags.SERVER_FEATURE_FLAGS
+        .setdefault('extension', {})
+        .setdefault('manager', {})
+    )
+    _mgr_flags['supports_csrf_post'] = True
+except ImportError:
+    # Older ComfyUI core without comfy_api.feature_flags module.
+    # Manager functions but cmfront will not observe the flag.
+    pass
+
+
 def prestartup():
     from . import prestartup_script  # noqa: F401
     logging.info('[PRE] ComfyUI-Manager')

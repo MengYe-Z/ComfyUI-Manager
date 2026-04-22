@@ -5,6 +5,16 @@ All notable changes to **ComfyUI-Manager** are documented in this file.
 The format is based on [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.1] - 2026-04-22
+
+### Added
+
+- Server-push feature flag `extension.manager.supports_csrf_post` registered at
+  startup, allowing ComfyUI-frontend (and other clients) to detect
+  CSRF-POST backend support as a semantic capability contract, without
+  relying on version string parsing. Pre-4.2.1 Manager does not set the
+  flag — clients should treat its absence as 'incompatible with NEW_UI'.
+
 ## [Unreleased]
 
 Security-hardening release on branch `fix/csrf-post-conversion`. Contains
@@ -120,4 +130,5 @@ below before upgrading programmatic clients.
   perform the change from a trusted entry point. Read access via `GET` is
   unaffected.
 
+[4.2.1]: https://github.com/Comfy-Org/ComfyUI-Manager/compare/v4.2...v4.2.1
 [Unreleased]: https://github.com/Comfy-Org/ComfyUI-Manager/compare/v4.1b6...HEAD
